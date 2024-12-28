@@ -39,7 +39,10 @@ class FavoriteMoviesScreen extends StatelessWidget {
         child: BlocBuilder<FavoriteMoviesBloc, FavoriteMoviesState>(
           builder: (context, state) {
             if (state is FavoriteMoviesLoadingState) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                  child: CircularProgressIndicator(
+                color: white,
+              ));
             } else if (state is FavoriteMoviesLoadedState) {
               final movies = state.movies;
               return ListView.builder(
@@ -76,7 +79,15 @@ class FavoriteMoviesScreen extends StatelessWidget {
               movie.posterPath.isNotEmpty
                   ? CachedNetworkImage(
                       imageUrl: '$kTrUrlBaseImage${movie.posterPath}',
-                      placeholder: (context, url) => const CircularProgressIndicator(),
+                      placeholder: (context, url) => Center(
+                        child: SizedBox(
+                          width: 30.w,
+                          height: 30.h,
+                          child: const CircularProgressIndicator(
+                            color: white,
+                          ),
+                        ),
+                      ),
                       errorWidget: (context, url, error) => const Icon(Icons.error),
                       width: 80.w,
                       height: 120.h,

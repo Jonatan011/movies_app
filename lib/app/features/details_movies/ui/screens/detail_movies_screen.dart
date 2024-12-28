@@ -7,6 +7,7 @@ import 'package:movies_app/app/features/favorites_movies/domain/entities/movie_e
 import 'package:movies_app/app/shared/design_system/color_palette.dart';
 import 'package:movies_app/app/shared/design_system/styles.dart';
 import 'package:movies_app/app/shared/utils/constants.dart';
+import 'package:movies_app/app/shared/utils/sizes.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   final MovieEntity movie;
@@ -62,8 +63,7 @@ class MovieDetailScreen extends StatelessWidget {
       children: [
         CachedNetworkImage(
           imageUrl: '$kTrUrlBaseImage${movie.posterPath}',
-          height: 300.h,
-          width: double.infinity,
+          width: kSizeScreenWidth,
           fit: BoxFit.contain,
           placeholder: (context, url) => const Center(
             child: CircularProgressIndicator(),
@@ -72,16 +72,6 @@ class MovieDetailScreen extends StatelessWidget {
             Icons.broken_image,
             size: 50,
             color: white,
-          ),
-        ),
-        Container(
-          height: 300.h,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [greyShade800.withOpacity(0.7), transparent],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
           ),
         ),
         Positioned(
