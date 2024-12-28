@@ -18,46 +18,49 @@ class FavoriteMoviesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<FavoriteMoviesBloc>().add(const FavoriteMoviesFetchedEvent());
 
-    return Scaffold(
-      appBar: CustomAppBarWidget(
-        title: kTrFavoriteMovies.tr(),
-        showBackButton: false,
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              color: white,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: CustomAppBarWidget(
+          title: kTrFavoriteMovies.tr(),
+          showBackButton: false,
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.refresh,
+                color: white,
+              ),
+              onPressed: () {
+                context.read<FavoriteMoviesBloc>().add(const FavoriteMoviesFetchedEvent());
+              },
             ),
-            onPressed: () {
-              context.read<FavoriteMoviesBloc>().add(const FavoriteMoviesFetchedEvent());
+          ],
+        ),
+        body: Container(
+          color: greyShade900,
+          child: BlocBuilder<FavoriteMoviesBloc, FavoriteMoviesState>(
+            builder: (context, state) {
+              if (state is FavoriteMoviesLoadingState) {
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: white,
+                ));
+              } else if (state is FavoriteMoviesLoadedState) {
+                final movies = state.movies;
+                return ListView.builder(
+                  itemCount: movies.length,
+                  itemBuilder: (context, index) {
+                    final movie = movies[index];
+                    return _buildCardFavoriteMovies(context, movie);
+                  },
+                );
+              } else if (state is FavoriteMoviesErrorState) {
+                return Center(child: Text(state.message, style: errorMessageStyle));
+              } else {
+                return Container();
+              }
             },
           ),
-        ],
-      ),
-      body: Container(
-        color: greyShade900,
-        child: BlocBuilder<FavoriteMoviesBloc, FavoriteMoviesState>(
-          builder: (context, state) {
-            if (state is FavoriteMoviesLoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(
-                color: white,
-              ));
-            } else if (state is FavoriteMoviesLoadedState) {
-              final movies = state.movies;
-              return ListView.builder(
-                itemCount: movies.length,
-                itemBuilder: (context, index) {
-                  final movie = movies[index];
-                  return _buildCardFavoriteMovies(context, movie);
-                },
-              );
-            } else if (state is FavoriteMoviesErrorState) {
-              return Center(child: Text(state.message, style: errorMessageStyle));
-            } else {
-              return Container();
-            }
-          },
         ),
       ),
     );
