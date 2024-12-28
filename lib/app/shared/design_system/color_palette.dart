@@ -35,5 +35,12 @@ Color greyShade300 = Colors.grey.shade300;
 Color blueShade100 = Colors.blue.shade100;
 Color redShade100 = Colors.red.shade100;
 Color greenShade100 = Colors.green.shade100;
+Color deepPurpleShade200 = Colors.deepPurpleAccent.shade200;
+Color greyShade900 = Colors.grey.shade900;
+Color greyShade800 = Colors.grey.shade800;
 
-Color colorPrimary = const Color(0xFF242424);
+Color whiteShade70 = Colors.white70;
+
+Color black54 = Colors.black54;
+
+Color colorPrimary = const Color.fromARGB(255, 235, 233, 233);

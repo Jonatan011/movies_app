@@ -1,7 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/app/features/favorites_movies/bloc/favorite_movies_bloc.dart';
+import 'package:movies_app/app/features/favorites_movies/domain/entities/movie_entity.dart';
+import 'package:movies_app/app/shared/app/ui/custom_app_bar_widget.dart';
+import 'package:movies_app/app/shared/config/router/app_navigator.dart';
 import 'package:movies_app/app/shared/design_system/color_palette.dart';
+import 'package:movies_app/app/shared/design_system/styles.dart';
+import 'package:movies_app/app/shared/utils/constants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FavoriteMoviesScreen extends StatelessWidget {
   const FavoriteMoviesScreen({super.key});
@@ -11,12 +19,9 @@ class FavoriteMoviesScreen extends StatelessWidget {
     context.read<FavoriteMoviesBloc>().add(const FavoriteMoviesFetchedEvent());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Películas Favoritas',
-          style: TextStyle(color: white),
-        ),
-        centerTitle: true,
+      appBar: CustomAppBarWidget(
+        title: kTrFavoriteMovies.tr(),
+        showBackButton: false,
         actions: [
           IconButton(
             icon: const Icon(
@@ -28,19 +33,9 @@ class FavoriteMoviesScreen extends StatelessWidget {
             },
           ),
         ],
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.deepPurpleAccent.shade200, Colors.deepPurple],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-        ),
       ),
       body: Container(
-        color: Colors.grey[900], // Fondo más suave oscuro
+        color: greyShade900,
         child: BlocBuilder<FavoriteMoviesBloc, FavoriteMoviesState>(
           builder: (context, state) {
             if (state is FavoriteMoviesLoadingState) {
@@ -51,60 +46,64 @@ class FavoriteMoviesScreen extends StatelessWidget {
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
                   final movie = movies[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    color: Colors.grey[850], // Fondo de la tarjeta más suave
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          movie.posterPath.isNotEmpty
-                              ? Image.network(
-                                  'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                                  width: 80,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                )
-                              : const SizedBox.shrink(),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  movie.title,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  movie.overview,
-                                  style: const TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 14,
-                                  ),
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return _buildCardFavoriteMovies(context, movie);
                 },
               );
             } else if (state is FavoriteMoviesErrorState) {
-              return Center(child: Text(state.message, style: const TextStyle(color: Colors.red)));
+              return Center(child: Text(state.message, style: errorMessageStyle));
             } else {
               return Container();
             }
           },
+        ),
+      ),
+    );
+  }
+
+  InkWell _buildCardFavoriteMovies(BuildContext context, MovieEntity movie) {
+    return InkWell(
+      onTap: () {
+        goToMovieDetails(context, movie);
+      },
+      child: Card(
+        margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        color: greyShade800,
+        child: Padding(
+          padding: EdgeInsets.all(16.h),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              movie.posterPath.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: '$kTrUrlBaseImage${movie.posterPath}',
+                      placeholder: (context, url) => const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      width: 80.w,
+                      height: 120.h,
+                      fit: BoxFit.cover,
+                    )
+                  : const SizedBox.shrink(),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      movie.title,
+                      style: sectionTitleStyle,
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      movie.overview,
+                      style: subtitleTextStyle,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

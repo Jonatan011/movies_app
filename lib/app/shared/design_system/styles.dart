@@ -14,11 +14,25 @@ final titleStyle = baseStyle.copyWith(
   color: colorPrimary,
 );
 
+// Estilo para titulos appBar
+final titleAppBarStyle = baseStyle.copyWith(
+  fontSize: 18.sp,
+  fontWeight: FontWeight.bold,
+  color: white,
+);
+
+// Estilo para titulos
+final titleDetailStyle = baseStyle.copyWith(
+  fontSize: 28.sp,
+  fontWeight: FontWeight.bold,
+  color: white,
+);
+
 // Estilo para títulos secundarios
 final titleSecondaryStyle = baseStyle.copyWith(
   fontSize: 18.sp,
   fontWeight: FontWeight.w500,
-  color: colorPrimary,
+  color: white,
 );
 
 //Estilo boton primario
@@ -31,8 +45,8 @@ final styleTextButtonPrimary = baseStyle.copyWith(
 // Estilo para cuerpo de texto
 final bodyStyle = baseStyle.copyWith(
   fontSize: 16.sp,
-  fontWeight: FontWeight.w400,
-  color: Colors.black87,
+  fontWeight: FontWeight.normal,
+  color: whiteShade70,
 );
 
 // Estilo para texto de botones
@@ -57,9 +71,9 @@ final textNormalStyle = baseStyle.copyWith(
 );
 
 final sectionTitleStyle = baseStyle.copyWith(
-  fontSize: 18.sp,
+  fontSize: 16.sp,
   fontWeight: FontWeight.bold,
-  color: colorPrimary,
+  color: white,
 );
 
 final inputTextStyle = baseStyle.copyWith(
@@ -67,8 +81,9 @@ final inputTextStyle = baseStyle.copyWith(
   color: Colors.black87,
 );
 
-final hintTextStyle = baseStyle.copyWith(
+final subtitleTextStyle = baseStyle.copyWith(
   fontSize: 14.sp,
+  fontWeight: FontWeight.normal,
   color: grey,
 );
 
@@ -90,11 +105,6 @@ final errorMessageStyle = baseStyle.copyWith(
 final emptyMessageStyle = baseStyle.copyWith(
   fontSize: 16.sp,
   color: grey,
-);
-
-final locationTitleStyle = baseStyle.copyWith(
-  fontSize: 18.sp,
-  fontWeight: FontWeight.bold,
 );
 
 final splashIconStyle = IconThemeData(

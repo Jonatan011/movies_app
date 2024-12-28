@@ -1,4 +1,9 @@
 {
-  "splash_title": "Movies App"
-
+  "splash_title": "Movies App",
+  "favorite_movies": "Películas Favoritas",
+  "title": "Título",
+  "release_date": "Fecha de Lanzamiento",
+  "popularity": "Popularidad",
+  "vote": "Votación",
+  "description": "Descripción"
 }
